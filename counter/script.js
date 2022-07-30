@@ -5,21 +5,36 @@ const btnIncrease = document.getElementById('increase')
 const elCounter = document.getElementById('counter')
 const counterStyles = getComputedStyle(elCounter)
 
-const initialCounter = parseInt(elCounter.dataset.initial) || 0 // defaults to 0
+const initial = parseInt(elCounter.dataset.initial) || 0 // defaults to 0
+const max = parseInt(elCounter.dataset.max) || Number.POSITIVE_INFINITY
+const min = parseInt(elCounter.dataset.min) || Number.NEGATIVE_INFINITY
+const step = parseInt(elCounter.dataset.step) || 1 // defaults to 1
 
-let counter = initialCounter
+// validate values
+if (max <= min) {
+  console.error("max must be greater than min")
+}
+
+if (initial < min || initial > max) {
+  console.error('initial must be within the range of min to max inclusive')
+}
+
+let counter = initial
+updateCounterEl()
+changeCounterColor()
 
 function increase() {
-  // TODO: add max and min limits
-  counter++
+  if (counter >= max) return
+  counter += step
 }
 
 function decrease() {
-  counter--
+  if (counter <= min) return
+  counter -= step
 }
 
 function reset() {
-  counter = initialCounter
+  counter = initial
 }
 
 function changeCounterColor() {
